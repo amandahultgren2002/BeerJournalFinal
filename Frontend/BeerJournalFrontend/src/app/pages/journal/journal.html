@@ -1,0 +1,76 @@
+<div class="page">
+
+  <!-- Header section: title and "Log a Beer" button -->
+  <div class="journal-header">
+    <div>
+      <h1 class="journal-title">My Beer Journal</h1>
+      <!-- Show entry count, with "s" for plural -->
+      <p class="journal-subtitle">{{ entries.length }} beer{{ entries.length !== 1 ? 's' : '' }} logged</p>
+    </div>
+    <button class="btn-log" routerLink="/log-beer">+ Log a Beer</button>
+  </div>
+
+  <!-- Stats summary bar at the top -->
+  <div class="stats-bar">
+    <div class="stat">
+      <p class="stat-label">BEERS LOGGED</p>
+      <p class="stat-value">{{ entries.length }}</p>
+    </div>
+    <div class="stat">
+      <p class="stat-label">AVG RATING</p>
+      <p class="stat-value">{{ avgRating }}</p>
+    </div>
+    <div class="stat">
+      <p class="stat-label">TOP STYLE</p>
+      <p class="stat-value">{{ topStyle }}</p>
+    </div>
+  </div>
+
+  <!-- Empty state: shown when the user has no entries yet -->
+  @if (entries.length === 0) {
+    <div class="empty-state">
+      <p class="empty-icon">🍺</p>
+      <p class="empty-title">No beers logged yet</p>
+      <p class="empty-sub">Start logging your favourite beers!</p>
+    </div>
+  }
+
+  <!-- Loop through each entry and show a card for it -->
+  @for (entry of entries; track entry.entryId) {
+    <div class="beer-card">
+
+      <!-- Top of the card: beer name, brand, rating, delete button -->
+      <div class="card-top">
+        <div>
+          <!-- Beer name and brand come from the nested beer object -->
+          <h3 class="beer-name">{{ entry.beer?.name }}</h3>
+          <p class="beer-brand">{{ entry.beer?.brand }}</p>
+        </div>
+        <div style="display:flex; align-items:center; gap:12px;">
+          <div class="rating-badge">★ {{ entry.rating }}/10</div>
+          <!-- Click handler: calls deleteEntry() with this entry's id -->
+          <button class="btn-delete" (click)="deleteEntry(entry.entryId)">🗑</button>
+        </div>
+      </div>
+
+      <!-- Bottom of the card: category, location, price, alcohol -->
+      <!-- Each detail is only shown if it actually has a value -->
+      <div class="card-bottom">
+        @if (entry.beer?.category) {
+          <span class="category-pill">{{ entry.beer?.category }}</span>
+        }
+        @if (entry.location) {
+          <span class="detail">📍 {{ entry.location }}</span>
+        }
+        @if (entry.price) {
+          <span class="detail">💰 {{ entry.price }}</span>
+        }
+        @if (entry.beer?.alcoholPct) {
+          <span class="detail">🍶 {{ entry.beer?.alcoholPct }}%</span>
+        }
+      </div>
+
+    </div>
+  }
+
+</div>

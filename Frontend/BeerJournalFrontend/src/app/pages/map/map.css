@@ -1,0 +1,69 @@
+.page {
+  background: #F4EEE2;
+  min-height: 100vh;
+  padding: 40px 48px;
+  font-family: 'DM Sans', sans-serif;
+  box-sizing: border-box;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.page-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #1C2B22;
+  letter-spacing: -1px;
+  margin: 0 0 4px;
+}
+
+.page-sub {
+  font-size: 14px;
+  color: #6B7F72;
+  margin: 0;
+}
+
+.map-container {
+  background: #FFFDF8;
+  border: 1px solid #DDD8CC;
+  border-radius: 16px;
+  height: calc(100vh - 160px);
+}
+
+.map-placeholder {
+  text-align: center;
+}
+
+.map-icon {
+  font-size: 64px;
+  margin: 0 0 16px;
+}
+
+.map-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1C2B22;
+  margin: 0 0 8px;
+}
+
+.map-sub {
+  font-size: 15px;
+  color: #6B7F72;
+  margin: 0;
+}
+
+#beer-map {
+  height: 100%;
+  width: 100%;
+  border-radius: 16px;
+}
+
+.beer-marker {
+  font-size: 40px;
+  background: none !important;
+  border: none !important;
+}

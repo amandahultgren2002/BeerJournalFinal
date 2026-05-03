@@ -1,0 +1,54 @@
+<div class="page">
+  
+  <!-- Left side — branding -->
+  <div class="left">
+    <span class="est-badge">EST. 2026</span>
+    <h1 class="headline">Hold<br>my Beer.</h1>
+    <p class="subline">Because good beers deserve to be remembered.</p>
+  </div>
+
+  <!-- Right side — form -->
+  <div class="right">
+    <div class="card">
+      <h2 class="card-title">Create your account</h2>
+      <form (ngSubmit)="onSubmit()" novalidate>
+
+        <div class="row-2">
+          <div class="field">
+            <label>FIRST NAME</label>
+            <input type="text" [(ngModel)]="firstName" name="firstName" placeholder="Lars"/>
+          </div>
+          <div class="field">
+            <label>LAST NAME</label>
+            <input type="text" [(ngModel)]="lastName" name="lastName" placeholder="Jensen"/>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>EMAIL</label>
+          <input type="email" [(ngModel)]="email" name="email" placeholder="lars@example.com"/>
+        </div>
+
+        <div class="field">
+          <label>PASSWORD</label>
+          <div class="password-wrap">
+            <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" name="password" placeholder="Min. 8 characters"/>
+            <button type="button" class="toggle-pw" (click)="togglePassword()">{{ showPassword ? 'Hide' : 'Show' }}</button>
+          </div>
+        </div>
+
+        <div class="server-error" *ngIf="error">{{ error }}</div>
+
+        <button type="submit" class="btn-primary">Create account →</button>
+
+        <div class="divider"><span></span><p>OR</p><span></span></div>
+
+        <div class="secondary-action">
+          Already have an account? <a routerLink="/login">Log in</a>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+</div>

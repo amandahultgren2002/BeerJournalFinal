@@ -1,0 +1,146 @@
+<div class="page">
+
+  <!-- Page header -->
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Log a Beer</h1>
+      <p class="page-sub">Record your tasting experience</p>
+    </div>
+    <a routerLink="/journal" class="btn-back">← Back to Journal</a>
+  </div>
+
+  <!-- Form card -->
+  <div class="form-card">
+    <form (ngSubmit)="onSubmit()" novalidate #form="ngForm">
+
+      <!-- ── BEER PICKER ──────────────────────────────────── -->
+      <div class="field">
+        <label>BEER *</label>
+        <select [(ngModel)]="selectedBeerId" name="selectedBeerId" required>
+          <option [ngValue]="null" disabled>-- Select a beer --</option>
+          @for (beer of beers; track beer.beerId) {
+            <option [ngValue]="beer.beerId">
+              {{ beer.name }}{{ beer.brand ? ' (' + beer.brand + ')' : '' }}
+            </option>
+          }
+          <option [ngValue]="'new'">+ Add new beer</option>
+        </select>
+      </div>
+
+      <!-- ── NEW BEER FIELDS ──────────────────────────────── -->
+      @if (isAddingNewBeer) {
+        <div class="new-beer-panel">
+          <h3 class="panel-title">New beer details</h3>
+
+          <div class="row-2">
+            <div class="field">
+              <label>BEER NAME *</label>
+              <input
+                type="text"
+                [(ngModel)]="newBeerName"
+                name="newBeerName"
+                placeholder="e.g. Tuborg Classic"
+              />
+            </div>
+            <div class="field">
+              <label>BRAND</label>
+              <input
+                type="text"
+                [(ngModel)]="newBeerBrand"
+                name="newBeerBrand"
+                placeholder="e.g. Carlsberg"
+              />
+            </div>
+          </div>
+
+          <div class="field">
+            <label>ALCOHOL %</label>
+            <input
+              type="text"
+              [(ngModel)]="newBeerAlcoholPct"
+              name="newBeerAlcoholPct"
+              placeholder="e.g. 5.2"
+            />
+          </div>
+
+          <div class="field">
+            <label>STYLE</label>
+            <div class="pills">
+              @for (cat of categories; track cat) {
+                <button
+                  type="button"
+                  class="pill"
+                  [class.active]="newBeerCategory === cat"
+                  (click)="setCategory(cat)"
+                >
+                  {{ cat }}
+                </button>
+              }
+            </div>
+          </div>
+        </div>
+      }
+
+      <!-- ── PRICE + LOCATION ────────────────────────────── -->
+      <div class="row-2">
+        <div class="field">
+          <label>PRICE</label>
+          <input
+            type="text"
+            [(ngModel)]="price"
+            name="price"
+            placeholder="e.g. 45 kr"
+          />
+        </div>
+        <div class="field">
+          <label>LOCATION</label>
+          <input
+            type="text"
+            [(ngModel)]="location"
+            name="location"
+            placeholder="e.g. Solbjerg Plads 3, Copenhagen"
+            (blur)="lookupLocation()"
+          />
+        </div>
+      </div>
+
+      <!-- ── STAR RATING ─────────────────────────────────── -->
+      <div class="field">
+        <label>RATING {{ rating > 0 ? '— ' + rating + '/10' : '' }} *</label>
+        <div class="stars">
+          @for (star of [1,2,3,4,5,6,7,8,9,10]; track star) {
+            <button
+              type="button"
+              class="star"
+              [class.active]="star <= rating"
+              (click)="setRating(star)"
+            >★</button>
+          }
+        </div>
+      </div>
+
+      <!-- ── TASTING NOTES ───────────────────────────────── -->
+      <div class="field">
+        <label>TASTING NOTES</label>
+        <textarea
+          [(ngModel)]="notes"
+          name="notes"
+          rows="3"
+          placeholder="Hoppy, citrusy finish..."
+        ></textarea>
+      </div>
+
+      <!-- Error message -->
+      @if (error) {
+        <div class="server-error">{{ error }}</div>
+      }
+
+      <!-- Submit -->
+      <button type="submit" class="btn-primary" [disabled]="submitting">
+        {{ submitting ? 'Saving...' : 'Log Beer →' }}
+      </button>
+
+    </form>
+  </div>
+
+</div>

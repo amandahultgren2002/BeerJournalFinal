@@ -1,0 +1,43 @@
+<div class="page">
+
+  <!-- Left side — branding -->
+  <div class="left">
+    <span class="est-badge">EST. 2026</span>
+    <h1 class="headline">Good to see<br>you again.</h1>
+    <p class="subline">Your beer journal is waiting for you.</p>
+  </div>
+
+  <!-- Right side — form -->
+  <div class="right">
+    <div class="card">
+      <h2 class="card-title">Log in</h2>
+      <form (ngSubmit)="onSubmit()" novalidate>
+
+        <div class="field">
+          <label>EMAIL</label>
+          <input type="email" [(ngModel)]="email" name="email" placeholder="lars@example.com"/>
+        </div>
+
+        <div class="field">
+          <label>PASSWORD</label>
+          <div class="password-wrap">
+            <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" name="password" placeholder="Your password"/>
+            <button type="button" class="toggle-pw" (click)="togglePassword()">{{ showPassword ? 'Hide' : 'Show' }}</button>
+          </div>
+        </div>
+
+        <div class="server-error" *ngIf="error">{{ error }}</div>
+
+        <button type="submit" class="btn-primary">Log in →</button>
+
+        <div class="divider"><span></span><p>OR</p><span></span></div>
+
+        <div class="secondary-action">
+          New here? <a routerLink="/signup">Create an account</a>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+</div>

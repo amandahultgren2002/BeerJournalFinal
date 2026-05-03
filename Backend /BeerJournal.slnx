@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="BeerJournal.API/BeerJournal.API.csproj" />
+  <Project Path="BeerJournal.Model/BeerJournal.Model.csproj" />
+</Solution>

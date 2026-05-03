@@ -1,0 +1,15 @@
+/* Leaflet (map) styles must be imported FIRST per CSS spec */
+@import 'leaflet/dist/leaflet.css';
+
+/* You can add global styles to this file, and also import other style files */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: #F4EEE2;
+}

@@ -1,0 +1,23 @@
+# .NET
+**/bin/
+**/obj/
+**/*.user
+**/*.suo
+
+# Angular / Node
+**/node_modules/
+**/dist/
+**/.angular/
+**/*.log
+
+# IDE
+**/.vscode/
+**/.idea/
+**/.DS_Store
+.DS_Store
+
+# Environment / secrets
+**/appsettings.Development.json
+**/appsettings.development.json
+*.env
+**/.env
