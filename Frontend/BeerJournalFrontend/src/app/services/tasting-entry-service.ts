@@ -1,30 +1,33 @@
+// Tasting entry service — talks to the backend for everything related to tasting entries
+
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { TastingEntry } from '../models/tasting-entry';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root'    // one shared instance for the whole app
 })
 export class TastingEntryService {
 
+  // Base URL for all tasting entry endpoints in the API
   private baseUrl = '/api/TastingEntries';
 
   constructor(private http: HttpClient) {}
 
-  // GET all tasting entries for the logged-in user
+  // GET — fetch all tasting entries for the logged-in user
   // Each entry includes a nested `beer` object (populated server-side via JOIN)
   getEntries(): Observable<TastingEntry[]> {
     return this.http.get<TastingEntry[]>(this.baseUrl);
   }
 
-  // GET one entry by its id
+  // GET — fetch one entry by its id
   getEntry(id: number): Observable<TastingEntry> {
     return this.http.get<TastingEntry>(`${this.baseUrl}/${id}`);
   }
 
   // POST — create a new tasting entry
-  // The body should include `beerId` (not the four old fields)
+  // The body must include `beerId` (the foreign key to the beers table)
   createEntry(entry: Partial<TastingEntry>): Observable<TastingEntry> {
     return this.http.post<TastingEntry>(this.baseUrl, entry);
   }
@@ -34,7 +37,7 @@ export class TastingEntryService {
     return this.http.put<TastingEntry>(`${this.baseUrl}/${id}`, entry);
   }
 
-  // DELETE
+  // DELETE — remove a tasting entry by id
   deleteEntry(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }

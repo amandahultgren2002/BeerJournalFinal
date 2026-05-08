@@ -1,3 +1,6 @@
+/* Settings page styles — cream background with two cards (profile + danger zone) */
+
+/* The page itself — fills the screen with the cream background */
 .page {
   background: #F4EEE2;
   min-height: 100vh;
@@ -6,6 +9,7 @@
   box-sizing: border-box;
 }
 
+/* ── Top header ─────────────────────────────────────────── */
 .page-header {
   margin-bottom: 32px;
 }
@@ -24,6 +28,7 @@
   margin: 0;
 }
 
+/* ── White card wrapping each section (Profile, Danger zone) ── */
 .settings-card {
   background: #FFFDF8;
   border: 1px solid #DDD8CC;
@@ -40,12 +45,14 @@
   margin: 0 0 24px;
 }
 
+/* Two-column row (used for first/last name) */
 .row-2 {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
 }
 
+/* ── Form fields (label + input) ────────────────────────── */
 .field {
   display: flex;
   flex-direction: column;
@@ -73,10 +80,12 @@
   box-sizing: border-box;
 }
 
+/* Green border when the user clicks into a field */
 .field input:focus {
   border-color: #2A5C45;
 }
 
+/* ── Save changes button (green) ────────────────────────── */
 .btn-primary {
   background: #2A5C45;
   color: #fff;
@@ -94,6 +103,8 @@
   opacity: 0.9;
 }
 
+/* ── Danger zone (delete account) ───────────────────────── */
+/* Salmon-colored border to warn the user this is destructive */
 .danger-zone {
   border-color: #F4B8A0;
 }
@@ -105,6 +116,7 @@
   line-height: 1.5;
 }
 
+/* Red delete button */
 .btn-danger {
   background: #C0392B;
   color: #fff;
@@ -122,6 +134,7 @@
   opacity: 0.9;
 }
 
+/* ── Feedback messages under the Save button ────────────── */
 .success-message {
   color: #276749;
   font-weight: 600;

@@ -1,3 +1,6 @@
+/* Map page styles — cream background with a big map area */
+
+/* The page itself — fills the screen with the cream background */
 .page {
   background: #F4EEE2;
   min-height: 100vh;
@@ -6,6 +9,7 @@
   box-sizing: border-box;
 }
 
+/* ── Top header (title + subtitle) ──────────────────────── */
 .page-header {
   display: flex;
   justify-content: space-between;
@@ -27,6 +31,9 @@
   margin: 0;
 }
 
+/* ── Map area ───────────────────────────────────────────── */
+/* White card that holds the map — height fills the rest of the screen
+   (calc subtracts the header + padding so it doesn't overflow) */
 .map-container {
   background: #FFFDF8;
   border: 1px solid #DDD8CC;
@@ -34,6 +41,7 @@
   height: calc(100vh - 160px);
 }
 
+/* Optional placeholder shown if no map loads (not currently used) */
 .map-placeholder {
   text-align: center;
 }
@@ -56,12 +64,15 @@
   margin: 0;
 }
 
+/* The actual Leaflet map fills the whole container */
 #beer-map {
   height: 100%;
   width: 100%;
   border-radius: 16px;
 }
 
+/* Custom style for the beer pin markers (overrides Leaflet's defaults
+   with !important because Leaflet sets its own inline styles) */
 .beer-marker {
   font-size: 40px;
   background: none !important;

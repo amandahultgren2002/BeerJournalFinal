@@ -1,3 +1,5 @@
+<!-- Journal page — shows the user's beer entries, stats, and edit/delete buttons -->
+
 <div class="page">
 
   <!-- Header section: title and "Log a Beer" button -->
@@ -39,7 +41,7 @@
   @for (entry of entries; track entry.entryId) {
     <div class="beer-card">
 
-      <!-- Top of the card: beer name, brand, rating, delete button -->
+      <!-- Top of the card: beer name, brand, rating, edit + delete buttons -->
       <div class="card-top">
         <div>
           <!-- Beer name and brand come from the nested beer object -->
@@ -48,7 +50,11 @@
         </div>
         <div style="display:flex; align-items:center; gap:12px;">
           <div class="rating-badge">★ {{ entry.rating }}/10</div>
-          <!-- Click handler: calls deleteEntry() with this entry's id -->
+
+          <!-- Edit button: navigates to log-beer page with this entry's id -->
+          <button class="btn-edit" [routerLink]="['/log-beer', entry.entryId]">✏️</button>
+
+          <!-- Delete button: calls deleteEntry() with this entry's id -->
           <button class="btn-delete" (click)="deleteEntry(entry.entryId)">🗑</button>
         </div>
       </div>
@@ -69,6 +75,11 @@
           <span class="detail">🍶 {{ entry.beer?.alcoholPct }}%</span>
         }
       </div>
+
+      <!-- Tasting notes — only shown if the user added any -->
+      @if (entry.notes) {
+        <p class="beer-notes">{{ entry.notes }}</p>
+      }
 
     </div>
   }

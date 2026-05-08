@@ -1,5 +1,8 @@
+<!-- Settings page — lets the user update their profile or delete their account -->
+
 <div class="page">
 
+  <!-- Page header: title and subtitle -->
   <div class="page-header">
     <div>
       <h1 class="page-title">Settings</h1>
@@ -7,9 +10,11 @@
     </div>
   </div>
 
+  <!-- Profile section — update first name, last name and email -->
   <div class="settings-card">
     <h2 class="section-title">Profile</h2>
 
+    <!-- First and last name on the same row -->
     <div class="row-2">
       <div class="field">
         <label>FIRST NAME</label>
@@ -26,20 +31,25 @@
       <input type="email" [(ngModel)]="email" name="email" placeholder="Your email"/>
     </div>
 
+    <!-- Save button — calls updateUser() in settings.ts -->
     <button class="btn-primary" (click)="updateUser()">
-  Save changes
-</button>
-<p *ngIf="message" class="success-message">{{ message }}</p>
-<p *ngIf="error" class="error-message">{{ error }}</p>
+      Save changes
+    </button>
 
+    <!-- Success / error messages — only shown if there's something to display -->
+    <p *ngIf="message" class="success-message">{{ message }}</p>
+    <p *ngIf="error" class="error-message">{{ error }}</p>
   </div>
 
+  <!-- Danger zone — separate card for the destructive action -->
   <div class="settings-card danger-zone">
     <h2 class="section-title">Danger zone</h2>
     <p class="danger-text">Once you delete your account all your data will be permanently removed.</p>
+
+    <!-- Delete button — calls deleteUser() which asks for confirmation first -->
     <button class="btn-danger" (click)="deleteUser()">
-  Delete account
-</button>
+      Delete account
+    </button>
   </div>
 
 </div>

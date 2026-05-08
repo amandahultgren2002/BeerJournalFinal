@@ -1,4 +1,11 @@
+<!-- Root app template — wraps the whole application -->
+
+<!-- Show the topbar only on pages where it should appear
+     (hidden on login/signup, visible everywhere else) -->
 @if (showTopbar()) {
   <app-topbar></app-topbar>
 }
+
+<!-- router-outlet is where Angular swaps in the current page based on the URL
+     e.g. /journal renders the Journal component, /map renders the Map component -->
 <router-outlet />

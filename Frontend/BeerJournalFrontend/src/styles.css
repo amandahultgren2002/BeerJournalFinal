@@ -1,14 +1,18 @@
-/* Leaflet (map) styles must be imported FIRST per CSS spec */
+/* styles.css — global styles that apply to the whole app
+   (each component also has its own scoped CSS file for component-specific styles) */
+
+/* Leaflet (map library) styles — must be imported FIRST per CSS spec */
 @import 'leaflet/dist/leaflet.css';
 
-/* You can add global styles to this file, and also import other style files */
-
+/* Universal reset — removes default browser margins/padding so layouts behave
+   the same in every browser. box-sizing: border-box makes width include padding+border */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
+/* Default font and background color for the entire app */
 body {
   font-family: 'DM Sans', sans-serif;
   background: #F4EEE2;

@@ -1,5 +1,7 @@
 namespace BeerJournal.Model.Entities;
 
+// Beer entity — represents one row in the beers table
+
 public class Beer
 {
     public int BeerId { get; set; }

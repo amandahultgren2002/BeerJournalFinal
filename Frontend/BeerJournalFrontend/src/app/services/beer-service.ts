@@ -1,16 +1,16 @@
-// Imports — Angular tools, RxJS Observable, and our Beer model
+// Beer service — talks to the backend for everything related to the beer catalogue
+
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Beer } from '../models/beer';
 
-// Tells Angular this service is available app-wide via DI
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root'    // one shared instance for the whole app
 })
 export class BeerService {
 
-  // Base URL for all the beer endpoints in the API
+  // Base URL for all beer endpoints in the API
   private baseUrl = '/api/Beers';
 
   constructor(private http: HttpClient) {}

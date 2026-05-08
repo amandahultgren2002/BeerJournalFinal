@@ -1,10 +1,12 @@
+<!-- Log-beer page — form to create a new tasting entry or edit an existing one -->
+
 <div class="page">
 
-  <!-- Page header -->
+  <!-- Page header — title and subtitle change depending on edit mode -->
   <div class="page-header">
     <div>
-      <h1 class="page-title">Log a Beer</h1>
-      <p class="page-sub">Record your tasting experience</p>
+      <h1 class="page-title">{{ isEditing ? 'Edit Beer' : 'Log a Beer' }}</h1>
+      <p class="page-sub">{{ isEditing ? 'Update your tasting' : 'Record your tasting experience' }}</p>
     </div>
     <a routerLink="/journal" class="btn-back">← Back to Journal</a>
   </div>
@@ -13,7 +15,7 @@
   <div class="form-card">
     <form (ngSubmit)="onSubmit()" novalidate #form="ngForm">
 
-      <!-- ── BEER PICKER ──────────────────────────────────── -->
+      <!-- Beer picker — dropdown listing all beers, plus an "+ Add new beer" option -->
       <div class="field">
         <label>BEER *</label>
         <select [(ngModel)]="selectedBeerId" name="selectedBeerId" required>
@@ -27,11 +29,12 @@
         </select>
       </div>
 
-      <!-- ── NEW BEER FIELDS ──────────────────────────────── -->
+      <!-- Extra fields — only shown when the user picks "+ Add new beer" -->
       @if (isAddingNewBeer) {
         <div class="new-beer-panel">
           <h3 class="panel-title">New beer details</h3>
 
+          <!-- Name + brand on one row -->
           <div class="row-2">
             <div class="field">
               <label>BEER NAME *</label>
@@ -63,6 +66,7 @@
             />
           </div>
 
+          <!-- Style pills — clickable buttons to choose a beer category -->
           <div class="field">
             <label>STYLE</label>
             <div class="pills">
@@ -81,7 +85,7 @@
         </div>
       }
 
-      <!-- ── PRICE + LOCATION ────────────────────────────── -->
+      <!-- Price + location on the same row -->
       <div class="row-2">
         <div class="field">
           <label>PRICE</label>
@@ -94,6 +98,7 @@
         </div>
         <div class="field">
           <label>LOCATION</label>
+          <!-- (blur) runs lookupLocation() when the user clicks away from the input -->
           <input
             type="text"
             [(ngModel)]="location"
@@ -104,7 +109,7 @@
         </div>
       </div>
 
-      <!-- ── STAR RATING ─────────────────────────────────── -->
+      <!-- Star rating — 10 clickable stars, fills up to the chosen value -->
       <div class="field">
         <label>RATING {{ rating > 0 ? '— ' + rating + '/10' : '' }} *</label>
         <div class="stars">
@@ -119,7 +124,7 @@
         </div>
       </div>
 
-      <!-- ── TASTING NOTES ───────────────────────────────── -->
+      <!-- Tasting notes (free text, optional) -->
       <div class="field">
         <label>TASTING NOTES</label>
         <textarea
@@ -130,14 +135,20 @@
         ></textarea>
       </div>
 
-      <!-- Error message -->
+      <!-- Error message — only shown if something went wrong -->
       @if (error) {
         <div class="server-error">{{ error }}</div>
       }
 
-      <!-- Submit -->
+      <!-- Submit button — text changes depending on edit mode and submitting state -->
       <button type="submit" class="btn-primary" [disabled]="submitting">
-        {{ submitting ? 'Saving...' : 'Log Beer →' }}
+        @if (submitting) {
+          Saving...
+        } @else if (isEditing) {
+          Save Changes →
+        } @else {
+          Log Beer →
+        }
       </button>
 
     </form>

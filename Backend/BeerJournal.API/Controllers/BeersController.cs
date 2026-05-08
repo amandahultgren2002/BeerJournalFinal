@@ -1,3 +1,6 @@
+// BeersController — handles all CRUD operations for the beer catalogue
+// Every endpoint requires the user to be logged in (JWT) thanks to [Authorize]
+
 using BeerJournal.Model.Entities;
 using BeerJournal.Model.Repositories;
 using Microsoft.AspNetCore.Authorization;
@@ -8,7 +11,7 @@ namespace BeerJournal.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize]
+[Authorize]   // every endpoint below requires a valid JWT token
 public class BeersController : ControllerBase
 {
     private readonly BeerRepository _beerRepository;
@@ -18,40 +21,39 @@ public class BeersController : ControllerBase
         _beerRepository = beerRepository;
     }
 
-    // GET api/Beers
-    // Returns the full catalogue — used by the dropdown in log-beer
+    // GET /api/Beers — return the full beer catalogue
+    // Used by the dropdown in log-beer.html
     [HttpGet]
     public IActionResult GetAll()
     {
         return Ok(_beerRepository.GetAllBeers());
     }
 
-    // GET api/Beers/{id}
+    // GET /api/Beers/{id} — return one beer by id
     [HttpGet("{id}")]
     public IActionResult GetById(int id)
     {
         var beer = _beerRepository.GetBeerById(id);
         if (beer == null) return NotFound();
+
         return Ok(beer);
     }
 
-    // POST api/Beers
-    // Creates a new beer in the shared catalogue
+    // POST /api/Beers — add a new beer to the catalogue
     [HttpPost]
     public IActionResult Create([FromBody] Beer beer)
     {
+        // Name is the only required field
         if (string.IsNullOrWhiteSpace(beer.Name))
             return BadRequest("Beer name is required");
 
         var created = _beerRepository.CreateBeer(beer);
-
         if (created == null) return BadRequest();
 
         return Ok(created);
     }
 
-    // PUT api/Beers/{id}
-    // Updates an existing beer in the catalogue
+    // PUT /api/Beers/{id} — update an existing beer
     [HttpPut("{id}")]
     public IActionResult Update(int id, [FromBody] Beer beer)
     {
@@ -66,13 +68,12 @@ public class BeersController : ControllerBase
         beer.BeerId = id;
 
         var result = _beerRepository.UpdateBeer(beer);
-
         if (!result) return NotFound();
 
         return Ok(new { message = "Beer updated" });
     }
 
-    // DELETE api/Beers/{id}
+    // DELETE /api/Beers/{id} — remove a beer from the catalogue
     // Will fail if any tasting entries still reference this beer
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
@@ -87,10 +88,10 @@ public class BeersController : ControllerBase
 
             return Ok(new { message = "Beer deleted" });
         }
+        // Catch the specific Postgres error for foreign key violations
+        // SqlState 23503 = a tasting_entry row still references this beer
         catch (PostgresException ex) when (ex.SqlState == "23503")
         {
-            // 23503 = foreign_key_violation
-            // Means tasting_entries still reference this beer
             return Conflict(new
             {
                 message = "Cannot delete this beer — it is referenced by tasting entries"

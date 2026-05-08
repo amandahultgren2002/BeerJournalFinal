@@ -1,3 +1,6 @@
+/* Journal page styles — cream background with cards for each beer entry */
+
+/* The page itself — fills the screen with the cream background */
 .page {
   background: #F4EEE2;
   min-height: 100vh;
@@ -6,9 +9,10 @@
   box-sizing: border-box;
 }
 
+/* ── Top header (title + Log a Beer button) ────────────── */
 .journal-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between;   /* title on the left, button on the right */
   align-items: center;
   margin-bottom: 32px;
 }
@@ -27,6 +31,7 @@
   margin: 0;
 }
 
+/* The orange "+ Log a Beer" button */
 .btn-log {
   background: #C97A1A;
   color: #fff;
@@ -44,18 +49,20 @@
   opacity: 0.9;
 }
 
+/* ── Stats bar (3 boxes showing totals) ─────────────────── */
 .stats-bar {
   display: flex;
   gap: 16px;
   margin-bottom: 40px;
 }
 
+/* Each stat box (Beers Logged, Avg Rating, Top Style) */
 .stat {
   background: #FFFDF8;
   border: 1px solid #DDD8CC;
   border-radius: 12px;
   padding: 20px 28px;
-  flex: 1;
+  flex: 1;          /* all three boxes share the row equally */
 }
 
 .stat-label {
@@ -73,6 +80,7 @@
   margin: 0;
 }
 
+/* ── Empty state (shown when no entries yet) ─────────────── */
 .empty-state {
   text-align: center;
   padding: 80px 20px;
@@ -95,6 +103,8 @@
   color: #6B7F72;
   margin: 0;
 }
+
+/* ── Beer card (one per logged beer) ────────────────────── */
 .beer-card {
   background: #FFFDF8;
   border: 1px solid #DDD8CC;
@@ -103,6 +113,7 @@
   margin-bottom: 12px;
 }
 
+/* Top of the card — name on the left, rating + buttons on the right */
 .card-top {
   display: flex;
   justify-content: space-between;
@@ -123,6 +134,7 @@
   margin: 0;
 }
 
+/* The orange rating badge ("★ 8/10") */
 .rating-badge {
   background: #FEF3E2;
   color: #C97A1A;
@@ -132,13 +144,15 @@
   border-radius: 10px;
 }
 
+/* Bottom row — category pill, location, price, alcohol % */
 .card-bottom {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: wrap;       /* details wrap to next line if there's no room */
   gap: 8px;
   align-items: center;
 }
 
+/* Green category pill (e.g. "IPA", "Pilsner") */
 .category-pill {
   background: #E8F0EC;
   color: #2A5C45;
@@ -148,11 +162,13 @@
   border-radius: 10px;
 }
 
+/* Plain detail text (location, price, alcohol) */
 .detail {
   font-size: 13px;
   color: #6B7F72;
 }
 
+/* Delete button (🗑) — faded by default, full opacity on hover */
 .btn-delete {
   background: none;
   border: none;
@@ -164,4 +180,15 @@
 
 .btn-delete:hover {
   opacity: 1;
+}
+
+/* Tasting notes shown under the card details, separated by a thin line */
+.beer-notes {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #E8DFD0;
+  font-size: 13px;
+  color: #6B7F72;
+  font-style: italic;
+  line-height: 1.5;
 }

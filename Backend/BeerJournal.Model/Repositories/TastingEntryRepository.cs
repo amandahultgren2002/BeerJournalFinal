@@ -1,3 +1,5 @@
+// TastingEntryRepository — handles all database operations for tasting entries
+
 using BeerJournal.Model.Entities;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
@@ -6,9 +8,11 @@ namespace BeerJournal.Model.Repositories;
 
 public class TastingEntryRepository : BaseRepository
 {
+    // Constructor — passes config to BaseRepository so we get the connection string
     public TastingEntryRepository(IConfiguration configuration) : base(configuration) { }
 
-    // GET all entries for one user — joined with the beers table
+    // GET — fetch all tasting entries for a specific user
+    // Includes beer data by joining with the beers table
     public List<TastingEntry> GetEntriesByUser(int userId)
     {
         var entries = new List<TastingEntry>();
@@ -30,6 +34,7 @@ public class TastingEntryRepository : BaseRepository
 
         using var reader = cmd.ExecuteReader();
 
+        // Loop through each row and build a TastingEntry object
         while (reader.Read())
         {
             entries.Add(MapEntry(reader));
@@ -38,7 +43,8 @@ public class TastingEntryRepository : BaseRepository
         return entries;
     }
 
-    // GET one entry by id (also joined with beers)
+    // GET — fetch one tasting entry by id
+    // Also includes beer data via join
     public TastingEntry? GetEntryById(int id)
     {
         using var conn = GetConnection();
@@ -57,6 +63,7 @@ public class TastingEntryRepository : BaseRepository
 
         using var reader = cmd.ExecuteReader();
 
+        // If a row is found, map it to an object
         if (reader.Read())
         {
             return MapEntry(reader);
@@ -66,7 +73,7 @@ public class TastingEntryRepository : BaseRepository
     }
 
     // POST — create a new tasting entry
-    // Note: only writes beer_id now, not the four old beer columns
+    // Only stores beer_id (beer details come from the beers table)
     public bool CreateEntry(TastingEntry entry)
     {
         using var conn = GetConnection();
@@ -90,10 +97,11 @@ public class TastingEntryRepository : BaseRepository
         cmd.Parameters.AddWithValue("@latitude",    (object?)entry.Latitude ?? DBNull.Value);
         cmd.Parameters.AddWithValue("@longitude",   (object?)entry.Longitude ?? DBNull.Value);
 
+        // ExecuteNonQuery returns number of inserted rows (should be 1 if successful)
         return cmd.ExecuteNonQuery() > 0;
     }
 
-    // PUT — update an existing entry
+    // PUT — update an existing tasting entry
     public bool UpdateEntry(TastingEntry entry)
     {
         using var conn = GetConnection();
@@ -121,10 +129,11 @@ public class TastingEntryRepository : BaseRepository
         cmd.Parameters.AddWithValue("@latitude",    (object?)entry.Latitude ?? DBNull.Value);
         cmd.Parameters.AddWithValue("@longitude",   (object?)entry.Longitude ?? DBNull.Value);
 
+        // Returns number of affected rows (0 = entry not found)
         return cmd.ExecuteNonQuery() > 0;
     }
 
-    // DELETE — remove an entry
+    // DELETE — remove a tasting entry by id
     public bool DeleteEntry(int id)
     {
         using var conn = GetConnection();
@@ -139,7 +148,9 @@ public class TastingEntryRepository : BaseRepository
         return cmd.ExecuteNonQuery() > 0;
     }
 
-    // Helper — converts a joined database row into a TastingEntry with nested Beer
+    // Helper — converts a database row into a TastingEntry object
+    // Includes nested Beer object from joined columns
+    // Used to avoid duplicating mapping logic in multiple methods
     private TastingEntry MapEntry(NpgsqlDataReader reader)
     {
         return new TastingEntry
@@ -155,7 +166,7 @@ public class TastingEntryRepository : BaseRepository
             Latitude    = reader["latitude"] == DBNull.Value ? null : Convert.ToDouble(reader["latitude"]),
             Longitude   = reader["longitude"] == DBNull.Value ? null : Convert.ToDouble(reader["longitude"]),
 
-            // Populate the nested Beer object from the joined columns
+            // Build the nested Beer object using the joined columns
             Beer = new Beer
             {
                 BeerId     = Convert.ToInt32(reader["beer_id"]),

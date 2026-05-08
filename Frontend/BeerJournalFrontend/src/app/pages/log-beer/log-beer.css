@@ -1,3 +1,6 @@
+/* Log-beer page styles — cream background with a white form card */
+
+/* The page itself — fills the screen with the cream background */
 .page {
   background: #F4EEE2;
   min-height: 100vh;
@@ -6,9 +9,10 @@
   box-sizing: border-box;
 }
 
+/* ── Top header (title + back button) ───────────────────── */
 .page-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between;   /* title on the left, back link on the right */
   align-items: center;
   margin-bottom: 32px;
 }
@@ -27,6 +31,7 @@
   margin: 0;
 }
 
+/* "← Back to Journal" link */
 .btn-back {
   color: #2A5C45;
   font-size: 14px;
@@ -39,6 +44,7 @@
   text-decoration: underline;
 }
 
+/* ── White form card that wraps the whole form ──────────── */
 .form-card {
   background: #FFFDF8;
   border: 1px solid #DDD8CC;
@@ -46,12 +52,14 @@
   padding: 36px;
 }
 
+/* Two-column row (used for first/last name, price/location, etc.) */
 .row-2 {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
 }
 
+/* ── Form fields (label + input) ────────────────────────── */
 .field {
   display: flex;
   flex-direction: column;
@@ -66,6 +74,7 @@
   margin-bottom: 6px;
 }
 
+/* Same look for inputs, textareas and selects so they match */
 .field input,
 .field textarea,
 .field select {
@@ -81,16 +90,19 @@
   box-sizing: border-box;
 }
 
+/* Green border when the user clicks into a field */
 .field input:focus,
 .field textarea:focus,
 .field select:focus {
   border-color: #2A5C45;
 }
 
+/* Let the user resize the notes area vertically only */
 .field textarea {
   resize: vertical;
 }
 
+/* Custom dropdown arrow for <select> (the default browser arrow looks ugly) */
 .field select {
   cursor: pointer;
   appearance: none;
@@ -102,12 +114,14 @@
   padding-right: 40px;
 }
 
+/* ── Style pills (Pilsner, IPA, Stout, etc.) ────────────── */
 .pills {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: wrap;     /* wrap to next line if there's no room */
   gap: 8px;
 }
 
+/* Each pill — clickable button with a rounded shape */
 .pill {
   padding: 6px 14px;
   border-radius: 20px;
@@ -121,34 +135,38 @@
   transition: all 0.15s;
 }
 
+/* Selected pill — turns dark green */
 .pill.active {
   background: #2A5C45;
   border-color: #2A5C45;
   color: #F4EEE2;
 }
 
+/* ── Star rating ────────────────────────────────────────── */
 .stars {
   display: flex;
   gap: 4px;
 }
 
-/* Reset native button look so the stars don't get default browser styling */
+/* Each star — reset the default button look so it just shows the ★ */
 .star {
   background: none;
   border: none;
   padding: 0;
   font-size: 24px;
-  color: #DDD8CC;
+  color: #DDD8CC;        /* gray when not selected */
   cursor: pointer;
   transition: color 0.1s;
   font-family: inherit;
   line-height: 1;
 }
 
+/* Selected stars turn orange */
 .star.active {
   color: #C97A1A;
 }
 
+/* ── Submit button ──────────────────────────────────────── */
 .btn-primary {
   width: 100%;
   background: #2A5C45;
@@ -168,11 +186,13 @@
   opacity: 0.9;
 }
 
+/* Faded out while saving (so the user can't double-click) */
 .btn-primary:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
+/* ── New beer panel (only shown when adding a new beer) ─── */
 .new-beer-panel {
   background: #F4EEE2;
   border: 1px solid #DDD8CC;
@@ -188,6 +208,7 @@
   margin: 0 0 16px;
 }
 
+/* ── Error message box ──────────────────────────────────── */
 .server-error {
   background: #FDECEA;
   color: #C0392B;

@@ -1,3 +1,5 @@
+// TastingEntry — model (defines the shape of tasting entry data used in the app)
+
 import { Beer } from './beer';
 
 export interface TastingEntry {
@@ -13,6 +15,7 @@ export interface TastingEntry {
   testingDate: string | null;   // ISO date string e.g. "2026-05-02"
   price: number | null;
   notes: string | null;
+
 
   // Map coordinates
   latitude: number | null;

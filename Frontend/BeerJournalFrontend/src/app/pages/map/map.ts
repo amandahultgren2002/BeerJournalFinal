@@ -1,4 +1,6 @@
-// Imports — Angular tools, Leaflet for the map, and our typed entry service
+// Map component — shows all the user's tasting entries as pins on a map
+// Uses the Leaflet library (open source mapping) and OpenStreetMap tiles
+
 import { Component, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import * as L from 'leaflet';
@@ -14,7 +16,7 @@ import { TastingEntry } from '../../models/tasting-entry';
 })
 export class Map implements AfterViewInit {
 
-  // Holds the entries we'll show as markers — properly typed now
+  // Holds the entries we'll show as markers
   entries: TastingEntry[] = [];
 
   constructor(
@@ -23,11 +25,13 @@ export class Map implements AfterViewInit {
   ) {}
 
   // Runs after the HTML is rendered (so the #beer-map div exists)
+  // We need ngAfterViewInit instead of ngOnInit because Leaflet needs
+  // a real <div> in the DOM to attach the map to
   ngAfterViewInit(): void {
     this.loadEntries();
   }
 
-  // Fetches entries from the backend, then draws the map
+  // Fetch entries from the backend, then draw the map
   loadEntries() {
     this.entryService.getEntries().subscribe({
       next: (data) => {
@@ -39,7 +43,7 @@ export class Map implements AfterViewInit {
     });
   }
 
-  // Builds the Leaflet map and drops a marker for each entry that has coordinates
+  // Build the Leaflet map and drop a marker for each entry with coordinates
   initMap() {
     // Center the map on Copenhagen, zoom level 14
     const map = L.map('beer-map').setView([55.6761, 12.5683], 14);
@@ -49,7 +53,7 @@ export class Map implements AfterViewInit {
       maxZoom: 19
     }).addTo(map);
 
-    // A custom marker icon — a big 📍 emoji
+    // Custom marker icon — a big 📍 emoji
     const beerIcon = L.divIcon({
       html: '<span style="font-size: 70px;">📍</span>',
       iconSize: [48, 48],
@@ -64,8 +68,8 @@ export class Map implements AfterViewInit {
           { icon: beerIcon }
         ).addTo(map);
 
-        // The popup that shows when you click the marker
-        // Beer name and brand now come from the nested beer object
+        // Popup shown when the user clicks the marker
+        // Beer name and brand come from the nested beer object
         marker.bindPopup(`
           <b>🍺 ${entry.beer?.name ?? ''}</b><br>
           ${entry.beer?.brand ? entry.beer.brand + '<br>' : ''}

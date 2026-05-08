@@ -1,3 +1,5 @@
+/* Topbar — styles for navigation bar and layout */
+
 .topbar {
   width: 100%;
   background: #2A5C45;
@@ -7,21 +9,24 @@
   padding: 0 48px;
   height: 64px;
   box-sizing: border-box;
-  position: sticky;
+  position: sticky; /* stays at top when scrolling */
   top: 0;
-  z-index: 100;
+  z-index: 100; /* keeps it above page content */
 }
 
+/* Brand section — logo + app name */
 .brand {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
+/* Brand icon placeholder */
 .brand-badge {
   font-size: 24px;
 }
 
+/* App name text */
 .brand-name {
   font-family: 'DM Sans', sans-serif;
   font-size: 18px;
@@ -30,12 +35,14 @@
   letter-spacing: -0.5px;
 }
 
+/* Navigation links container */
 .nav-links {
   display: flex;
   align-items: center;
   gap: 32px;
 }
 
+/* Individual navigation link */
 .nav-link {
   font-family: 'DM Sans', sans-serif;
   font-size: 14px;
@@ -45,10 +52,12 @@
   transition: color 0.15s;
 }
 
+/* Hover state for links */
 .nav-link:hover {
   color: #F4EEE2;
 }
 
+/* Logout button */
 .btn-logout {
   background: transparent;
   border: 1.5px solid #3A6E55;
@@ -62,10 +71,13 @@
   transition: all 0.15s;
 }
 
+/* Hover state for logout button */
 .btn-logout:hover {
   background: #C97A1A;
   border-color: #C97A1A;
 }
+
+/* Active route — highlights current page */
 .nav-link.active {
   color: #F4EEE2;
   border-bottom: 2px solid #C97A1A;

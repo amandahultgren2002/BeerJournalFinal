@@ -1,3 +1,6 @@
+// TastingEntriesController — handles all CRUD operations for tasting entries
+// Every endpoint requires the user to be logged in (JWT) thanks to [Authorize]
+
 using BeerJournal.Model.Entities;
 using BeerJournal.Model.Repositories;
 using Microsoft.AspNetCore.Authorization;
@@ -8,7 +11,7 @@ namespace BeerJournal.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize]
+[Authorize]   // every endpoint below requires a valid JWT token
 public class TastingEntriesController : ControllerBase
 {
     private readonly TastingEntryRepository _entryRepository;
@@ -18,8 +21,7 @@ public class TastingEntriesController : ControllerBase
         _entryRepository = entryRepository;
     }
 
-    // GET api/TastingEntries
-    // Returns only the logged-in user's entries
+    // GET /api/TastingEntries — return only the logged-in user's entries
     [HttpGet]
     public IActionResult GetAll()
     {
@@ -29,7 +31,7 @@ public class TastingEntriesController : ControllerBase
         return Ok(_entryRepository.GetEntriesByUser(userId.Value));
     }
 
-    // GET api/TastingEntries/{id}
+    // GET /api/TastingEntries/{id} — return one entry by id
     [HttpGet("{id}")]
     public IActionResult GetById(int id)
     {
@@ -37,7 +39,6 @@ public class TastingEntriesController : ControllerBase
         if (userId == null) return Unauthorized();
 
         var entry = _entryRepository.GetEntryById(id);
-
         if (entry == null) return NotFound();
 
         // Make sure users can only read their own entries
@@ -46,7 +47,7 @@ public class TastingEntriesController : ControllerBase
         return Ok(entry);
     }
 
-    // POST api/TastingEntries
+    // POST /api/TastingEntries — create a new entry
     [HttpPost]
     public IActionResult Create([FromBody] TastingEntry entry)
     {
@@ -57,13 +58,12 @@ public class TastingEntriesController : ControllerBase
         entry.UserId = userId.Value;
 
         var result = _entryRepository.CreateEntry(entry);
-
         if (!result) return BadRequest();
 
         return Ok(new { message = "Entry created" });
     }
 
-    // PUT api/TastingEntries/{id}
+    // PUT /api/TastingEntries/{id} — update an existing entry
     [HttpPut("{id}")]
     public IActionResult Update(int id, [FromBody] TastingEntry entry)
     {
@@ -76,17 +76,17 @@ public class TastingEntriesController : ControllerBase
         // Make sure users can only update their own entries
         if (existing.UserId != userId.Value) return Forbid();
 
+        // Set the id and userId from trusted sources, not the request body
         entry.EntryId = id;
         entry.UserId  = userId.Value;
 
         var result = _entryRepository.UpdateEntry(entry);
-
         if (!result) return NotFound();
 
-        return Ok(new { message = "Entry created" });
+        return Ok(new { message = "Entry updated" });
     }
 
-    // DELETE api/TastingEntries/{id}
+    // DELETE /api/TastingEntries/{id} — delete an entry
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
@@ -100,7 +100,6 @@ public class TastingEntriesController : ControllerBase
         if (existing.UserId != userId.Value) return Forbid();
 
         var result = _entryRepository.DeleteEntry(id);
-
         if (!result) return NotFound();
 
         return Ok(new { message = "Entry deleted" });

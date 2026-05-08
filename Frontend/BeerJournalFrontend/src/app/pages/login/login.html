@@ -1,37 +1,65 @@
+<!-- Login page — form for existing users to log in -->
+
 <div class="page">
 
-  <!-- Left side — branding -->
+  <!-- Left side: branding -->
   <div class="left">
     <span class="est-badge">EST. 2026</span>
     <h1 class="headline">Good to see<br>you again.</h1>
     <p class="subline">Your beer journal is waiting for you.</p>
   </div>
 
-  <!-- Right side — form -->
+  <!-- Right side: login form -->
   <div class="right">
     <div class="card">
       <h2 class="card-title">Log in</h2>
-      <form (ngSubmit)="onSubmit()" novalidate>
 
+      <!-- #loginForm gives us a reference to check if the form is valid -->
+      <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)" novalidate>
+
+        <!-- Email — required and must be a valid format -->
         <div class="field">
           <label>EMAIL</label>
-          <input type="email" [(ngModel)]="email" name="email" placeholder="lars@example.com"/>
-        </div>
-
-        <div class="field">
-          <label>PASSWORD</label>
-          <div class="password-wrap">
-            <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" name="password" placeholder="Your password"/>
-            <button type="button" class="toggle-pw" (click)="togglePassword()">{{ showPassword ? 'Hide' : 'Show' }}</button>
+          <input type="email"
+                 [(ngModel)]="email"
+                 name="email"
+                 #emailRef="ngModel"
+                 required
+                 email
+                 placeholder="lars@example.com"/>
+          <div class="field-error" *ngIf="emailRef.invalid && (emailRef.touched || loginForm.submitted)">
+            <span *ngIf="emailRef.errors?.['required']">Email is required</span>
+            <span *ngIf="emailRef.errors?.['email']">Please enter a valid email address</span>
           </div>
         </div>
 
+        <!-- Password — required (no minimum length on login) -->
+        <div class="field">
+          <label>PASSWORD</label>
+          <div class="password-wrap">
+            <input [type]="showPassword ? 'text' : 'password'"
+                   [(ngModel)]="password"
+                   name="password"
+                   #passwordRef="ngModel"
+                   required
+                   placeholder="Your password"/>
+            <button type="button" class="toggle-pw" (click)="togglePassword()">
+              {{ showPassword ? 'Hide' : 'Show' }}
+            </button>
+          </div>
+          <div class="field-error" *ngIf="passwordRef.invalid && (passwordRef.touched || loginForm.submitted)">
+            Password is required
+          </div>
+        </div>
+
+        <!-- Backend error (e.g. wrong password) -->
         <div class="server-error" *ngIf="error">{{ error }}</div>
 
         <button type="submit" class="btn-primary">Log in →</button>
 
         <div class="divider"><span></span><p>OR</p><span></span></div>
 
+        <!-- Link to signup page -->
         <div class="secondary-action">
           New here? <a routerLink="/signup">Create an account</a>
         </div>

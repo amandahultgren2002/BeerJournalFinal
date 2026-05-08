@@ -1,3 +1,5 @@
+// TastingEntry entity — represents one row in the tasting_entries table
+
 namespace BeerJournal.Model.Entities;
 
 public class TastingEntry

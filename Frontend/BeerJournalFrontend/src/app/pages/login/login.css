@@ -1,9 +1,13 @@
+/* Login page styles — same layout as signup */
+
+/* Reset default browser spacing */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
+/* Full page split into two columns */
 .page {
   min-height: 100vh;
   display: flex;
@@ -11,7 +15,7 @@
   font-family: 'DM Sans', sans-serif;
 }
 
-/* Left side — cream background with branding */
+/* Left side — branding */
 .left {
   flex: 1;
   background: #F4EEE2;
@@ -49,7 +53,7 @@
   max-width: 1000px;
 }
 
-/* Right side — green background with form */
+/* Right side — form */
 .right {
   flex: 1;
   background: #2A5C45;
@@ -70,12 +74,14 @@
   margin-bottom: 24px;
 }
 
+/* Two-column row for first/last name */
 .row-2 {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
 }
 
+/* Each label + input pair */
 .field {
   display: flex;
   flex-direction: column;
@@ -105,10 +111,18 @@
   color: #4A7A62;
 }
 
+/* Orange border when input is focused */
 .field input:focus {
   border-color: #C97A1A;
 }
 
+/* Red border when the input is invalid (Angular adds these classes automatically) */
+.field input.ng-invalid.ng-touched,
+.password-wrap:has(input.ng-invalid.ng-touched) {
+  border-color: #E07A5F;
+}
+
+/* Password input wrapper (input + show/hide button) */
 .password-wrap {
   display: flex;
   align-items: center;
@@ -144,12 +158,22 @@
   white-space: nowrap;
 }
 
+/* Error text shown below an invalid field */
+.field-error {
+  font-size: 11px;
+  color: #F4B8A0;
+  margin-top: 5px;
+  font-weight: 500;
+}
+
+/* Error from the backend (above the submit button) */
 .server-error {
   font-size: 12px;
   color: #F4B8A0;
   margin-bottom: 10px;
 }
 
+/* Main orange submit button */
 .btn-primary {
   width: 100%;
   background: #C97A1A;
@@ -168,6 +192,7 @@
   opacity: 0.9;
 }
 
+/* "OR" divider */
 .divider {
   display: flex;
   align-items: center;
@@ -187,6 +212,7 @@
   margin: 0;
 }
 
+/* Box at the bottom with the link to login */
 .secondary-action {
   border: 1.5px solid #3A6E55;
   border-radius: 9px;

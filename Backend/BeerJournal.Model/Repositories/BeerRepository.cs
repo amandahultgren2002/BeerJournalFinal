@@ -1,3 +1,5 @@
+// BeerRepository — handles all database operations for beers
+
 using BeerJournal.Model.Entities;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
@@ -6,9 +8,10 @@ namespace BeerJournal.Model.Repositories;
 
 public class BeerRepository : BaseRepository
 {
+    // Constructor — passes config to BaseRepository so we get the connection string
     public BeerRepository(IConfiguration configuration) : base(configuration) { }
 
-    // GET all beers — used to populate the dropdown in log-beer
+    // GET — fetch all beers (used to fill the dropdown in log-beer)
     public List<Beer> GetAllBeers()
     {
         var beers = new List<Beer>();
@@ -23,6 +26,7 @@ public class BeerRepository : BaseRepository
         using var cmd = new NpgsqlCommand(sql, conn);
         using var reader = cmd.ExecuteReader();
 
+        // Loop through each row and build a Beer object
         while (reader.Read())
         {
             beers.Add(MapBeer(reader));
@@ -31,7 +35,7 @@ public class BeerRepository : BaseRepository
         return beers;
     }
 
-    // GET one beer by id
+    // GET — fetch one beer by id
     public Beer? GetBeerById(int id)
     {
         using var conn = GetConnection();
@@ -61,6 +65,7 @@ public class BeerRepository : BaseRepository
         using var conn = GetConnection();
         conn.Open();
 
+        // RETURNING beer_id makes Postgres send back the new id after insert
         string sql = @"INSERT INTO beers (name, brand, alcohol_pct, category)
                        VALUES (@name, @brand, @alcoholPct, @category)
                        RETURNING beer_id";
@@ -71,6 +76,7 @@ public class BeerRepository : BaseRepository
         cmd.Parameters.AddWithValue("@alcoholPct", (object?)beer.AlcoholPct ?? DBNull.Value);
         cmd.Parameters.AddWithValue("@category",   (object?)beer.Category ?? DBNull.Value);
 
+        // ExecuteScalar returns the first column of the first row (here: the new beer_id)
         var newId = cmd.ExecuteScalar();
         if (newId == null) return null;
 
@@ -121,6 +127,7 @@ public class BeerRepository : BaseRepository
     }
 
     // Helper — converts a database row into a Beer object
+    // Used by GetAllBeers and GetBeerById to avoid duplicating this code
     private Beer MapBeer(NpgsqlDataReader reader)
     {
         return new Beer

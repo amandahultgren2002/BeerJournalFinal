@@ -1,48 +1,119 @@
+<!-- Signup page — form for creating a new account -->
+
 <div class="page">
-  
-  <!-- Left side — branding -->
+
+  <!-- Left side: branding text -->
   <div class="left">
     <span class="est-badge">EST. 2026</span>
     <h1 class="headline">Hold<br>my Beer.</h1>
     <p class="subline">Because good beers deserve to be remembered.</p>
   </div>
 
-  <!-- Right side — form -->
+  <!-- Right side: the signup form -->
   <div class="right">
     <div class="card">
       <h2 class="card-title">Create your account</h2>
-      <form (ngSubmit)="onSubmit()" novalidate>
 
+      <!-- The form. #signupForm gives us a reference so we can check
+           if it's valid. ngSubmit runs onSubmit() when the user submits. -->
+      <form #signupForm="ngForm" (ngSubmit)="onSubmit(signupForm)" novalidate>
+
+        <!-- First and last name on the same row -->
         <div class="row-2">
+
           <div class="field">
             <label>FIRST NAME</label>
-            <input type="text" [(ngModel)]="firstName" name="firstName" placeholder="Lars"/>
+            <!-- [(ngModel)] = two-way binding to the firstName variable.
+                 'required' makes the field mandatory. -->
+            <input type="text"
+                   [(ngModel)]="firstName"
+                   name="firstName"
+                   #firstNameRef="ngModel"
+                   required
+                   placeholder="Lars"/>
+            <!-- Show error only when field is empty AND user has touched
+                 it or tried to submit -->
+            <div class="field-error" *ngIf="firstNameRef.invalid && (firstNameRef.touched || signupForm.submitted)">
+              First name is required
+            </div>
           </div>
+
           <div class="field">
             <label>LAST NAME</label>
-            <input type="text" [(ngModel)]="lastName" name="lastName" placeholder="Jensen"/>
+            <input type="text"
+                   [(ngModel)]="lastName"
+                   name="lastName"
+                   #lastNameRef="ngModel"
+                   required
+                   placeholder="Jensen"/>
+            <div class="field-error" *ngIf="lastNameRef.invalid && (lastNameRef.touched || signupForm.submitted)">
+              Last name is required
+            </div>
           </div>
         </div>
 
+        <!-- Email field — required and must be a valid email format -->
         <div class="field">
           <label>EMAIL</label>
-          <input type="email" [(ngModel)]="email" name="email" placeholder="lars@example.com"/>
+          <input type="email"
+                 [(ngModel)]="email"
+                 name="email"
+                 #emailRef="ngModel"
+                 required
+                 email
+                 placeholder="lars@example.com"/>
+          <!-- Different message depending on what's wrong -->
+          <div class="field-error" *ngIf="emailRef.invalid && (emailRef.touched || signupForm.submitted)">
+            <span *ngIf="emailRef.errors?.['required']">Email is required</span>
+            <span *ngIf="emailRef.errors?.['email']">Please enter a valid email address</span>
+          </div>
         </div>
 
+        <!-- Zip code — number input, required -->
+        <div class="field">
+          <label>ZIP CODE</label>
+          <input type="number"
+                 [(ngModel)]="zipCode"
+                 name="zipCode"
+                 #zipCodeRef="ngModel"
+                 required
+                 placeholder="2000"/>
+          <div class="field-error" *ngIf="zipCodeRef.invalid && (zipCodeRef.touched || signupForm.submitted)">
+            Zip code is required
+          </div>
+        </div>
+
+        <!-- Password with show/hide button -->
         <div class="field">
           <label>PASSWORD</label>
           <div class="password-wrap">
-            <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" name="password" placeholder="Min. 8 characters"/>
-            <button type="button" class="toggle-pw" (click)="togglePassword()">{{ showPassword ? 'Hide' : 'Show' }}</button>
+            <!-- [type] switches between 'password' (hidden) and 'text' (visible) -->
+            <input [type]="showPassword ? 'text' : 'password'"
+                   [(ngModel)]="password"
+                   name="password"
+                   #passwordRef="ngModel"
+                   required
+                   minlength="8"
+                   placeholder="Min. 8 characters"/>
+            <!-- type="button" so this button doesn't submit the form -->
+            <button type="button" class="toggle-pw" (click)="togglePassword()">
+              {{ showPassword ? 'Hide' : 'Show' }}
+            </button>
+          </div>
+          <div class="field-error" *ngIf="passwordRef.invalid && (passwordRef.touched || signupForm.submitted)">
+            <span *ngIf="passwordRef.errors?.['required']">Password is required</span>
+            <span *ngIf="passwordRef.errors?.['minlength']">Password must be at least 8 characters</span>
           </div>
         </div>
 
+        <!-- Error message coming from the backend (e.g. email taken) -->
         <div class="server-error" *ngIf="error">{{ error }}</div>
 
         <button type="submit" class="btn-primary">Create account →</button>
 
         <div class="divider"><span></span><p>OR</p><span></span></div>
 
+        <!-- Link to login page (no full reload, uses Angular Router) -->
         <div class="secondary-action">
           Already have an account? <a routerLink="/login">Log in</a>
         </div>
